@@ -8,6 +8,9 @@ class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return '{}'.format(self.authorUser)
+
     def update_rating(self):
         postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
@@ -24,6 +27,9 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+
+    def __str__(self):
+        return '{}'.format(self.name)
 
 
 
@@ -46,6 +52,9 @@ class Post(models.Model):
 
     def preview(self):
         return '{} ... '.format(self.text[0:124])
+
+    def get_absolute_url(self):
+        return f'/news/{self.id}'
 
     def like(self):
         self.rating += 1

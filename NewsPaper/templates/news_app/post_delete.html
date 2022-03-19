@@ -1,0 +1,36 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% block title %} Post list {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить данный товар?</h2>
+<table>
+    <thead>
+        <th>
+            <h5>Название</h5>
+        </th>
+        <th>
+            <h5>Дата публикации</h5>
+        </th>
+        <th>
+            <h5>Текст</h5>
+        </th>
+
+    </thead>
+    <tr>
+        <td>
+            {{ post.title|censor }}
+        </td>
+        <td>
+            {{ post.dateCreation|date:'d-M-Y' }}
+        </td>
+        <td>
+            {{ post.text|truncatewords:20|censor }}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

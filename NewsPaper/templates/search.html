@@ -1,0 +1,44 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+<h1>Поиск </h1>
+<form method="GET">
+    {{ filter.form }} <!-- Форму от фильтров за нас сделает django. А вот кнопку, увы придётся делать самому -->
+    <input type="submit" value="Найти">
+</form>
+ <table>
+        <tr>
+            <td>
+                <h5>Название</h5>
+            </td>
+            <td>
+                <h5>Дата публикации</h5>
+            </td>
+            <td>
+                <h5>Текст</h5>
+            </td>
+        </tr>
+ {% for post in filter.qs %}
+     <tr>
+        <td>
+            {{ post.title|censor }}
+        </td>
+        <td>
+            {{ post.dateCreation|date:'d-M-Y' }}
+        </td>
+        <td>
+            {{ post.text|truncatewords:20|censor }}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
+
+{% endblock content %}
+
+
