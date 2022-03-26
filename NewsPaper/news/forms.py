@@ -1,6 +1,5 @@
 from django.forms import ModelForm
-from .models import Post
-
+from .models import Post, Author, User
 
 class PostForm(ModelForm):
 
@@ -11,5 +10,12 @@ class PostForm(ModelForm):
             'postCategory',
             'title',
             'text',
-
         ]
+
+
+
+class UserForm(ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['username']

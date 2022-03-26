@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0+6!&#22n1425ok7k@db@mq_h2yqagk+s@4vdtyoe$2mxx@kto
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1'] # '127.0.0.1' добавлено из модуля D5
 
 
 # Application definition
@@ -41,7 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'news',
     'accounts',
-    'django_filters'
+    'django_filters',
+
+# добавили в модуле D5
+    'protect',
+    'sign',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -61,8 +69,8 @@ ROOT_URLCONF = 'NewsPaper.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # добавили
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],                 # добавили
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,7 +83,18 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_URL = '/accounts/login/'   # добавили в модуле D5
+LOGIN_REDIRECT_URL = '/'    # добавили в модуле D5
+
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
+
+# добавили в модуле D5
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'    #подтверждение акаунта по почте в данном случае (отключено)
+ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}  #для работы формы по автоматическому добавлению пользователя в группу
 
 
 # Database

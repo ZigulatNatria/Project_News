@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from .models import Post, Author, User
 from datetime import datetime
 from django.core.paginator import Paginator
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, UserForm
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+
 
 class PostsList(ListView):
     model = Post
@@ -32,13 +35,15 @@ class PostSearch(ListView):
         return context
 
 
-class PostCreateView(CreateView):
+class PostCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post')
     template_name = 'news_app/post_create.html'
     form_class = PostForm
 
 
 
-class PostUdateView(UpdateView):
+class PostUdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post')
     template_name = 'news_app/post_create.html'
     form_class = PostForm
 
@@ -48,10 +53,21 @@ class PostUdateView(UpdateView):
 
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post')
     template_name = 'news_app/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
 
+
+class AuthorUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'news_app/author_update.html'
+    context_object_name = 'user'
+    form_class = UserForm
+    success_url = '/'
+
+
+    def get_object(self, **kwargs):
+        return self.request.user
 
 
