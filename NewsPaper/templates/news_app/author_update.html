@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+
+
+<h1>{{request.user.username}}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }} <!-- Теперь нам нужна только готовая форма и кнопка -->
+    <input type="submit" value="Сохранить изменения">
+</form>
+
+{% endblock content %}
+
+
