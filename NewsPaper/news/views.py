@@ -1,6 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Author, User
+from .models import Post, Author, User, Category, PostCategory, UserCategory
+from django.shortcuts import redirect
 from datetime import datetime
 from django.core.paginator import Paginator
 from .filters import PostFilter
@@ -22,6 +24,7 @@ class PostDetailView(DetailView):
     template_name = 'news_app/post_detail.html'
     queryset = Post.objects.all()
 
+
 class PostSearch(ListView):
     model = Post
     template_name = 'search.html'
@@ -39,6 +42,25 @@ class PostCreateView(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post')
     template_name = 'news_app/post_create.html'
     form_class = PostForm
+
+    def post(self, request):
+        title = request.POST['title']
+        text = request.POST['text']
+        post_category_id = request.POST['postCategory']
+        category_id = Category.objects.get(id=post_category_id).id
+        category_object = Category.objects.get(id=post_category_id)
+
+        if Author.objects.filter(authorUser__username=request.user.username).exists():
+            author = Author.objects.get(authorUser__username=request.user.username).id
+        else:
+            author = Author.objects.create(authorUser=request.user).id
+        postt = Post.objects.create(author_id=author, title=title, text=text)
+        postt.save()
+
+        new_postcategory = PostCategory.objects.create(postTrough=postt, categoryTrough=category_object)
+        new_postcategory.save()
+
+        return redirect('/news/')
 
 
 
@@ -71,3 +93,17 @@ class AuthorUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
 
+@login_required
+def add_subscribe(request):
+    user = request.user
+    category = Category.objects.get(pk=request.POST['id_cat'])
+    subscribe = UserCategory(user_id=user.id, category_id=category.id)
+    subscribe.save()
+    return redirect('/news/')
+
+
+class CategoryList(ListView):
+    model = Category
+    template_name = 'category.html'
+    context_object_name = 'categories'
+    queryset = Category.objects.order_by('-id')

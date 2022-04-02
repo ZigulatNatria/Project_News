@@ -1,0 +1,20 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% block content %}
+
+{% for category in categories %}
+<form action="subscribe/" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id_cat" value={{category.id}}>
+                        <input type="submit" value='Подписаться на категорию "{{category.name}}"'>
+ </form>
+<br>
+{% endfor %}
+{% endblock content %}
+
+
