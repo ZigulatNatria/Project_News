@@ -28,7 +28,7 @@ def periodic_subscribers_mailing():
 
         posts_qs = Post.objects.order_by('-dateCreation').filter(postCategory=category_id).values('id', 'title')[0:10]
 
-        cat_qs = Category.objects.filter(name=category).values('subscribers__username', 'subscribers__email')
+        cat_qs = Category.objects.filter(name=category).values('subscribe__username', 'subscribe__email')
 
         for subs in cat_qs:
             subscriber_username = subs.get('subscribe__username')

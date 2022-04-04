@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h3>Здравствуй, {{ subscriber_username }}. Вот последние новости этой недели для тебя в категории {{ category }}</h3><hr>
+    {% for post in posts_qs %}
+    <h4><a href="http://127.0.0.1:8000/news/{{ post.id }}">{{ post.title }}</a></h4>
+    {% endfor %}
+</body>
+</html>
