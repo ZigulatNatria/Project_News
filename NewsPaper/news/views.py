@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 
 
 
+
 class PostsList(ListView):
     model = Post
     template_name = 'posts.html'
