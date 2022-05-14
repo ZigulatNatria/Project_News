@@ -257,7 +257,7 @@ LOGGING = {
         },
         'file_security': {
             'level': 'INFO',
-            'filters': ['require_debug_false'],
+            'filters': ['require_debug_true'],
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'security.log',
             'formatter': 'general'
