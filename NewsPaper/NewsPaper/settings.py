@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from .key import email, short_email, password
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1'] # '127.0.0.1' добавлено из модуля
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation', # обязательно впишите его перед админом (для превода)
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,7 +148,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = True     #должно быть значение True для работы локазизатора
 
 USE_TZ = True
 
@@ -165,15 +167,26 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
+#путь для сохранения файлов преевода
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
+#языки для перевода
+LANGUAGES = [
+    ('en-us', 'English'),
+    ('ru', 'Русский')
+]
+
+
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
-EMAIL_HOST_USER = 'vachrameev.oleg'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = 'kogotysuslika159'  # пароль от почты
+EMAIL_HOST_USER = short_email  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_PASSWORD = password  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 #Добавлено в D6
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru' # если вы используете Яндекс, то не
 
-SERVER_EMAIL = 'vachrameev.oleg@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+SERVER_EMAIL = email  # это будет у нас вместо аргумента FROM в массовой рассылке
 DEFAULT_FROM_EMAIL = SERVER_EMAIL
 
 ADMINS = [('admin', 'ZigulatNatria@yandex.ru'),]
